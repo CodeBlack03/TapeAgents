@@ -1,0 +1,20 @@
+# Azure OpenAI GPT-3.5 Turbo Configuration for TapeAgents
+# 
+# This configuration file shows how to set up Azure OpenAI GPT-3.5 Turbo with TapeAgents.
+# Make sure to set the required environment variables:
+# - AZURE_API_KEY: Your Azure OpenAI API key
+# - AZURE_API_BASE: Your Azure OpenAI endpoint (e.g., https://your-resource.openai.azure.com/)
+# - AZURE_API_VERSION: API version (e.g., 2024-02-15-preview)
+
+_target_: tapeagents.llms.LiteLLM
+model_name: azure/gpt-35-turbo  # Replace 'gpt-35-turbo' with your actual deployment name
+use_cache: false
+stream: false
+context_size: 16385
+observe_llm_calls: true
+parameters:
+  temperature: 0.7
+  max_tokens: 1000
+  top_p: 1.0
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
