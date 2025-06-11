@@ -1,0 +1,16 @@
+{
+  "base_agent": {
+    "agent_type": "base",
+    "error": "litellm.AuthenticationError: AuthenticationError: OpenAIException - Incorrect API key provided: ghp_dQRL****************************9j9A. You can find your API key at https://platform.openai.com/account/api-keys."
+  },
+  "codeact_agent": {
+    "agent_type": "codeact",
+    "error": "3 validation errors for CodeActAgent\nllm\n  Extra inputs are not permitted [type=extra_forbidden, input_value=LiteLLM(model_name='gpt-4...se, simple_schemas=True), input_type=LiteLLM]\n    For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden\nenable_workflow_graphs\n  Extra inputs are not permitted [type=extra_forbidden, input_value=True, input_type=bool]\n    For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden\nenable_error_localization\n  Extra inputs are not permitted [type=extra_forbidden, input_value=True, input_type=bool]\n    For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden"
+  },
+  "autonomous_learning": {
+    "feature": "autonomous_learning",
+    "status": "available",
+    "description": "Enables agents to learn and improve from experience"
+  },
+  "comparison": {}
+}

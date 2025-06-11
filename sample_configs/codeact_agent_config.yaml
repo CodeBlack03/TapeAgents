@@ -1,0 +1,31 @@
+agent:
+  _target_: tapeagents.agent.Agent
+  enhanced_features: true
+autonomous_learning:
+  enabled: true
+  max_learning_rounds: 3
+batch: 1
+defaults:
+- _self_
+environment:
+  _target_: tapeagents.environment.ToolCollectionEnvironment
+  enhanced_tools: true
+exp_name: codeact_autonomous_sample
+exp_path: results/codeact_autonomous
+llm:
+  _target_: tapeagents.llms.LiteLLM
+  model_name: azure/gpt-4o-mini
+  parameters:
+    max_tokens: 1500
+    temperature: 0.7
+  stream: false
+  use_cache: true
+only_tasks:
+- - 1
+  - 0
+- - 1
+  - 1
+- - 2
+  - 0
+retry_unsolved: false
+split: validation

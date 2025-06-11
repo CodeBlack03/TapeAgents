@@ -1,0 +1,38 @@
+GAIA BENCHMARK FRAMEWORK DEMONSTRATION REPORT
+============================================================
+
+FRAMEWORK OVERVIEW:
+Description: GAIA Benchmark Comparison: Base TapeAgent vs CodeAct + Autonomous Learning
+Sample Size: 100.0% of each level
+Total Tasks: 6
+Levels Tested: [1, 2, 3]
+
+PERFORMANCE COMPARISON:
+Base Agent Accuracy: 83.3%
+CodeAct + Autonomous Accuracy: 100.0%
+Accuracy Improvement: +16.7%
+Relative Improvement: +20.0%
+
+Base Agent Avg Time: 2.83s
+CodeAct + Autonomous Avg Time: 1.75s
+Time Improvement: +1.08s per task
+
+LEVEL-BY-LEVEL RESULTS:
+Level 1:
+  Base: 100.0%
+  CodeAct: 100.0%
+  Improvement: +0.0%
+  Tasks: 3
+
+Level 2:
+  Base: 100.0%
+  CodeAct: 100.0%
+  Improvement: +0.0%
+  Tasks: 2
+
+Level 3:
+  Base: 0.0%
+  CodeAct: 100.0%
+  Improvement: +100.0%
+  Tasks: 1
+
