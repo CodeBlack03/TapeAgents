@@ -7,7 +7,7 @@
 # - AZURE_API_VERSION: API version (e.g., 2024-02-15-preview)
 
 _target_: tapeagents.llms.LiteLLM
-model_name: azure/gpt-4o  # Replace 'gpt-4o' with your actual deployment name
+model_name: azure/gpt-4o  # Replace 'gpt-4o' with your actual Azure deployment name
 use_cache: false
 stream: false
 context_size: 128000

@@ -60,3 +60,133 @@ If you see the error `remote: Access to dataset gaia-benchmark/GAIA is restricte
 ```bash
 huggingface-cli login
 ```
+
+## Running GAIA Agent with Azure OpenAI (GPT-4o)
+
+To run the GAIA agent on the validation set using Azure OpenAI's GPT-4o model, follow these steps:
+
+### 1. Set up Azure OpenAI Environment Variables
+
+First, configure your Azure OpenAI credentials:
+
+```bash
+export AZURE_API_KEY="your-azure-openai-api-key"
+export AZURE_API_BASE="https://your-resource.openai.azure.com/"
+export AZURE_API_VERSION="2024-02-01"
+```
+
+### 2. Configure the Azure GPT-4o Model
+
+Edit the Azure GPT-4o configuration file at `conf/llm/azure_gpt4o.yaml` to match your deployment:
+
+```yaml
+_target_: tapeagents.llms.LiteLLM
+model_name: azure/your-gpt-4o-deployment-name  # Replace with your actual deployment name
+use_cache: false
+stream: false
+context_size: 128000
+observe_llm_calls: true
+parameters:
+  temperature: 0.7
+  max_tokens: 2000
+  top_p: 0.95
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+```
+
+### 3. Create a Custom Configuration
+
+Create a new configuration file `conf/gaia_azure_gpt4o.yaml`:
+
+```yaml
+defaults:
+  - _self_
+  - llm: azure_gpt4o
+  - agent: gaia
+  - environment: web_browser
+
+exp_name: azure_gpt4o_validation_run
+exp_path: outputs/gaia/runs/${exp_name}
+
+split: validation
+batch: 4  # Adjust based on your rate limits
+retry_unsolved: true
+
+only_tasks: []  # Leave empty to run all tasks, or specify specific tasks like:
+# - [1, 0]  # Level 1, Task 0
+# - [1, 1]  # Level 1, Task 1
+
+hydra:
+  run:
+    dir: ${exp_path}
+```
+
+### 4. Run the Evaluation
+
+Execute the evaluation on the GAIA validation set:
+
+```bash
+# Run all validation tasks
+uv run -m examples.gaia_agent.scripts.evaluate --config-name=gaia_azure_gpt4o
+
+# Run specific tasks only (Level 1, first 5 tasks)
+uv run -m examples.gaia_agent.scripts.evaluate --config-name=gaia_azure_gpt4o \
+  only_tasks="[[1,0],[1,1],[1,2],[1,3],[1,4]]"
+
+# Run with different batch size (for rate limiting)
+uv run -m examples.gaia_agent.scripts.evaluate --config-name=gaia_azure_gpt4o \
+  batch=1
+
+# Run only Level 1 tasks
+uv run -m examples.gaia_agent.scripts.evaluate --config-name=gaia_azure_gpt4o \
+  only_tasks="[[1,i] for i in range(30)]"
+```
+
+### 5. Monitor Results
+
+The results will be saved to `outputs/gaia/runs/azure_gpt4o_validation_run/`:
+
+- **Tapes**: Individual task execution traces in `tapes/`
+- **Logs**: Execution logs in `logs/`
+- **Images**: Screenshots and attachments in `attachments/images/`
+
+### 6. View Results with Tape Browser
+
+Launch the interactive tape browser to explore results:
+
+```bash
+uv run -m examples.gaia_agent.scripts.tape_browser \
+  --exp-path outputs/gaia/runs/azure_gpt4o_validation_run
+```
+
+### 7. Collect and Analyze Results
+
+Generate summary statistics:
+
+```bash
+uv run -m examples.gaia_agent.scripts.collect_results \
+  outputs/gaia/runs/azure_gpt4o_validation_run
+```
+
+### Example Commands
+
+```bash
+# Quick test with first 3 tasks from Level 1
+uv run -m examples.gaia_agent.scripts.evaluate --config-name=gaia_azure_gpt4o \
+  only_tasks="[[1,0],[1,1],[1,2]]" batch=1
+
+# Full validation set evaluation (all levels)
+uv run -m examples.gaia_agent.scripts.evaluate --config-name=gaia_azure_gpt4o \
+  batch=4
+
+# Level 1 only (easier tasks)
+uv run -m examples.gaia_agent.scripts.evaluate --config-name=gaia_azure_gpt4o \
+  only_tasks="[[1,i] for i in range(165)]"
+```
+
+### Troubleshooting
+
+- **Rate Limits**: Reduce `batch` size to 1 if you hit Azure OpenAI rate limits
+- **Authentication**: Ensure your Azure credentials are correctly set
+- **Deployment Name**: Verify your GPT-4o deployment name in the config file
+- **Permissions**: Make sure you have access to the GAIA dataset on Hugging Face
