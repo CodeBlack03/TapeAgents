@@ -29,6 +29,8 @@ from tapeagents.agent import Agent, Node
 from tapeagents.core import Prompt, SetNextNode
 from tapeagents.dialog_tape import AssistantStep, DialogTape, UserStep
 from tapeagents.environment import ToolCollectionEnvironment
+from tapeagents.tools.web_search import WebSearch
+from tapeagents.tools.code_executor import CodeExecutor
 from tapeagents.llms import LiteLLM
 from tapeagents.orchestrator import main_loop
 from tapeagents.prompting import tape_to_messages
@@ -403,8 +405,12 @@ class GAIAAutonomousCodeActRunner:
         return Agent[GaiaTape].create(self.llm, nodes=[autonomous_codeact_node])
     
     def _create_environment(self) -> ToolCollectionEnvironment:
-        """Create enhanced environment"""
-        return ToolCollectionEnvironment()
+        """Create enhanced environment with GAIA tools"""
+        tools = [
+            WebSearch(),
+            CodeExecutor(exp_path=str(self.results_dir))
+        ]
+        return ToolCollectionEnvironment(tools=tools)
     
     def _load_gaia_tasks(self, 
                         levels: List[int] = [1, 2, 3],
