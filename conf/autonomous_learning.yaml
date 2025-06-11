@@ -1,0 +1,147 @@
+# Autonomous Learning Configuration for TapeAgents
+# 
+# This configuration defines settings for the autonomous learning system
+# that enables TapeAgents to learn and improve in environments without
+# explicit instructions, using only data sources and tools.
+
+# Environment Learner Configuration
+environment_learner:
+  max_learning_rounds: 10
+  tasks_per_round: 5
+  optimization_rounds_per_cycle: 3
+  convergence_threshold: 0.9
+  storage_path: "./autonomous_learning_data"
+
+# Trajectory Optimizer Configuration (ETO-style)
+trajectory_optimizer:
+  max_exploration_rounds: 5
+  trajectories_per_round: 10
+  success_threshold: 0.7
+  learning_rate: 0.1
+  contrastive_learning: true
+  failure_analysis: true
+
+# Memory Warmer Configuration
+memory_warmer:
+  max_memory_size: 1000
+  similarity_threshold: 0.7
+  memory_decay_factor: 0.95
+  quality_update_enabled: true
+  auto_cleanup: true
+
+# Task Generator Configuration
+task_generator:
+  max_tasks_per_generation: 10
+  difficulty_progression_rate: 0.1
+  exploration_bias: 0.3
+  creativity_factor: 0.2
+  progressive_learning: true
+
+# Seed Task Manager Configuration
+seed_task_manager:
+  auto_categorization: true
+  auto_difficulty_detection: true
+  variation_generation: true
+  environment_analysis: true
+
+# LLM Configuration for Learning
+llm:
+  _target_: tapeagents.llms.LiteLLM
+  model_name: gpt-4o-mini
+  use_cache: true
+  stream: false
+  parameters:
+    temperature: 0.7
+    max_tokens: 1000
+    top_p: 0.9
+
+# Agent Configuration for Autonomous Learning
+agent:
+  _target_: tapeagents.agent.Agent
+  nodes:
+    - _target_: tapeagents.autonomous_learning.AutonomousLearningNode
+      name: "autonomous_learning"
+
+# Environment Configuration
+environment:
+  # Available tools in the environment
+  available_tools:
+    - "file_reader"
+    - "web_search"
+    - "calculator"
+    - "data_analyzer"
+    - "code_executor"
+    - "database_query"
+    - "api_client"
+    - "text_processor"
+  
+  # Available data sources
+  data_sources:
+    - "local_files"
+    - "web_content"
+    - "databases"
+    - "apis"
+    - "user_input"
+    - "system_logs"
+  
+  # Environment capabilities
+  capabilities:
+    text_processing:
+      - "read"
+      - "write"
+      - "analyze"
+      - "summarize"
+      - "translate"
+    data_analysis:
+      - "statistics"
+      - "visualization"
+      - "modeling"
+      - "prediction"
+    web_interaction:
+      - "search"
+      - "scrape"
+      - "api_calls"
+      - "download"
+    computation:
+      - "math"
+      - "logic"
+      - "algorithms"
+      - "optimization"
+
+# Learning Metrics Configuration
+metrics:
+  track_success_rate: true
+  track_reward_progression: true
+  track_tool_usage: true
+  track_pattern_learning: true
+  track_difficulty_progression: true
+  save_detailed_logs: true
+
+# Task Categories and Difficulties
+task_categories:
+  - "exploration"
+  - "data_analysis"
+  - "tool_usage"
+  - "problem_solving"
+  - "creative"
+  - "integration"
+
+task_difficulties:
+  - "beginner"
+  - "intermediate"
+  - "advanced"
+  - "expert"
+
+# Logging Configuration
+logging:
+  level: INFO
+  save_logs: true
+  log_file: "autonomous_learning.log"
+  detailed_trajectory_logs: true
+
+# Experimental Features
+experimental:
+  multi_agent_learning: false
+  cross_session_memory: true
+  adaptive_difficulty: true
+  meta_learning: false
