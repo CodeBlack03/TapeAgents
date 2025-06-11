@@ -22,6 +22,7 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 from tqdm import tqdm
+from pydantic import Field
 
 # TapeAgents imports
 from tapeagents.agent import Agent, Node
@@ -48,14 +49,11 @@ class AutonomousCodeActNode(Node):
     """Enhanced node with autonomous learning and CodeAct capabilities"""
     
     name: str = "autonomous_codeact"
-    
-    def __init__(self):
-        super().__init__()
-        self.learning_memory = []
-        self.success_patterns = []
-        self.failure_patterns = []
-        self.task_count = 0
-        self.workflow_graphs = {}
+    learning_memory: List = Field(default_factory=list)
+    success_patterns: List = Field(default_factory=list)
+    failure_patterns: List = Field(default_factory=list)
+    task_count: int = 0
+    workflow_graphs: Dict = Field(default_factory=dict)
     
     def make_prompt(self, agent: Agent, tape: GaiaTape) -> Prompt:
         """Create enhanced prompt with autonomous learning and CodeAct context"""
