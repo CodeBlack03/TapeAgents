@@ -1,0 +1,21 @@
+defaults:
+  - _self_
+  - llm: azure_gpt4o
+  - agent: gaia
+  - environment: web_local_exec
+
+exp_name: azure_gpt4o_simple_run
+exp_path: outputs/gaia/runs/${exp_name}
+
+split: validation
+batch: 1  # Start with 1 to avoid rate limits
+retry_unsolved: true
+
+only_tasks: []  # Leave empty to run all tasks, or specify specific tasks like:
+# - [1, 0]  # Level 1, Task 0
+# - [1, 1]  # Level 1, Task 1
+# - [2, 0]  # Level 2, Task 0
+
+hydra:
+  run:
+    dir: ${exp_path}
