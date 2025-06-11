@@ -459,3 +459,30 @@ class MakeObservation(Action, Generic[StepType]):
 
 def last_actions(tape: Tape) -> list[Action]:
     return [step for step in tape.steps[-tape.metadata.n_added_steps :] if isinstance(step, Action)]
+
+
+# CodeAct Integration Classes
+class SetWorkflowNode(Action):
+    """Action to set the next workflow node to execute."""
+    kind: Literal["set_workflow_node"] = "set_workflow_node"
+    node_id: str = Field(description="ID of the workflow node to execute next")
+    execution_context: dict[str, Any] = Field(default_factory=dict, description="Context for node execution")
+
+
+class WorkflowExecutionStep(Step):
+    """Step that represents workflow execution state."""
+    kind: Literal["workflow_execution"] = "workflow_execution"
+    node_id: str = Field(description="ID of the executed node")
+    execution_status: str = Field(description="Status of execution")
+    execution_time: float = Field(default=0.0, description="Execution time")
+    output_variables: dict[str, Any] = Field(default_factory=dict, description="Variables produced")
+
+
+class CodeActMetadata(TapeMetadata):
+    """Extended metadata for CodeAct tapes."""
+    workflow_id: str | None = None
+    total_nodes: int = 0
+    completed_nodes: int = 0
+    failed_nodes: int = 0
+    execution_mode: str = "sequential"  # sequential, parallel, adaptive
+    complexity_score: float = 0.0
