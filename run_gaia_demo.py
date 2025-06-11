@@ -54,8 +54,8 @@ def run_demo_test():
     
     # Run with 2 tasks per level for quick demo
     cmd = [
-        "python", "gaia_autonomous_runner.py",
-        "--tasks", "2",
+        "python", "run_gaia_working.py",
+        "--max-tasks", "2",
         "--verbose"
     ]
     
@@ -96,25 +96,27 @@ def show_usage_options():
     
     print("""
 QUICK TESTS:
-  python gaia_autonomous_runner.py --tasks 2        # 2 tasks per level (fastest)
-  python gaia_autonomous_runner.py --level 1 --tasks 5  # Level 1 only, 5 tasks
+  python run_gaia_working.py --max-tasks 2          # 2 tasks per level (fastest)
+  python gaia_autonomous_runner.py --tasks 2        # Alternative simplified version
+  python run_gaia_working.py --levels 1 --max-tasks 5  # Level 1 only, 5 tasks
 
 MEDIUM TESTS:
-  python gaia_autonomous_runner.py --tasks 5        # 5 tasks per level
-  python gaia_autonomous_runner.py --sample-percent 0.05  # 5% of all tasks
+  python run_gaia_working.py --max-tasks 5          # 5 tasks per level
+  python run_gaia_working.py --sample-percent 0.05  # 5% of all tasks
+  python gaia_autonomous_runner.py --sample-percent 0.05  # Alternative version
 
 COMPREHENSIVE TESTS:
-  python gaia_autonomous_runner.py --sample-percent 0.1   # 10% of all tasks
-  python gaia_autonomous_runner.py --all-levels --tasks 10  # 10 tasks per level
+  python run_gaia_working.py --sample-percent 0.1   # 10% of all tasks (recommended)
+  python run_gaia_working.py --max-tasks 10         # 10 tasks per level
 
 SPECIFIC CONFIGURATIONS:
-  python gaia_autonomous_runner.py --level 3 --tasks 3    # Focus on hardest level
-  python gaia_autonomous_runner.py --azure-deployment gpt-4o  # Use different model
-  python gaia_autonomous_runner.py --results-dir my_results   # Custom output dir
+  python run_gaia_working.py --levels 3 --max-tasks 3    # Focus on hardest level
+  python run_gaia_working.py --azure-deployment gpt-4o   # Use different model
+  python run_gaia_working.py --results-dir my_results    # Custom output dir
 
 ADVANCED OPTIONS:
-  python run_gaia_autonomous_codeact.py --sample-percent 0.1  # Full implementation
-  python run_gaia_autonomous_codeact.py --learning-rounds 5   # More learning rounds
+  python run_gaia_autonomous_codeact.py --sample-percent 0.1  # Full implementation (may need fixes)
+  python run_gaia_working.py --verbose                       # Detailed logging
 """)
 
 def main():
